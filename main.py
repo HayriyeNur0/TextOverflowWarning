@@ -5,7 +5,7 @@ def main():
 
     # Test verileri
     text = "motor kontrol "
-    area_width = 50
+    area_width = 70 
 
     pixel_difference = check_text_overflow(
         text,
