@@ -1,0 +1,5 @@
+Motor Durumu: Çalışıyor
+Motor Gücü: 125 kW
+Motor Devri: 2850 RPM
+Akü Gerilimi: 24.5 V
+Sistem Hazır

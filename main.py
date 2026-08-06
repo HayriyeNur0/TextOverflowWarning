@@ -1,25 +1,65 @@
+from widget_provider import get_widget
+from text_loader import load_texts
 from text_overflow import check_text_overflow
 
 
 def main():
 
-    # Test verileri
-    text = "motor kontrol "
-    area_width = 70 
+    print("===== TFT Overflow Analyzer =====\n")
 
-    pixel_difference = check_text_overflow(
-        text,
-        area_width
-    )
+    widget = get_widget()
 
-    if pixel_difference > 0:
-        print(f"UYARI: Metin {pixel_difference} piksel taşıyor.")
+    texts = load_texts("texts.txt")
 
-    elif pixel_difference == 0:
-        print("Metin alana tam sığıyor.")
+    print("\nAnaliz Başlıyor...\n")
 
-    else:
-        print(f"Metin alana sığıyor. {-pixel_difference} piksel boşluk kaldı.")
+    pass_count = 0
+    fail_count = 0
+
+    for text in texts:
+
+        pixel_difference = check_text_overflow(
+            text,
+            widget.width
+        )
+
+        print("-" * 50)
+
+        print(f"Text : {text}")
+
+        if pixel_difference > 0:
+
+            print("Durum : FAIL")
+
+            print(f"Overflow : {pixel_difference} px")
+
+            fail_count += 1
+
+        elif pixel_difference == 0:
+
+            print("Durum : PASS")
+
+            print("Tam sığıyor.")
+
+            pass_count += 1
+
+        else:
+
+            print("Durum : PASS")
+
+            print(f"Boşluk : {-pixel_difference} px")
+
+            pass_count += 1
+
+    print("\n==============================")
+
+    print("ÖZET")
+
+    print(f"Toplam : {len(texts)}")
+
+    print(f"PASS : {pass_count}")
+
+    print(f"FAIL : {fail_count}")
 
 
 if __name__ == "__main__":
