@@ -1,6 +1,9 @@
 from widget_provider import get_widget
 from text_loader import load_texts
-from text_overflow import check_text_overflow
+from text_overflow import (
+    check_text_overflow,
+    check_text_height_overflow
+)
 
 
 def main():
@@ -18,37 +21,60 @@ def main():
 
     for text in texts:
 
-        pixel_difference = check_text_overflow(
+        horizontal_overflow = check_text_overflow(
             text,
             widget.width
+        )
+
+        vertical_overflow = check_text_height_overflow(
+            widget.height
         )
 
         print("-" * 50)
 
         print(f"Text : {text}")
 
-        if pixel_difference > 0:
+        # Yatay kontrol
+        if horizontal_overflow > 0:
 
-            print("Durum : FAIL")
-
-            print(f"Overflow : {pixel_difference} px")
+            print("Yatay Durum : FAIL")
+            print(f"Yatay Overflow : {horizontal_overflow} px")
 
             fail_count += 1
 
-        elif pixel_difference == 0:
+        else:
 
-            print("Durum : PASS")
+            print("Yatay Durum : PASS")
 
-            print("Tam sığıyor.")
+            if horizontal_overflow == 0:
+                print("Yatay olarak tam sığıyor.")
+            else:
+                print(
+                    f"Yatay boşluk : {-horizontal_overflow} px"
+                )
 
-            pass_count += 1
+        # Dikey kontrol
+        if vertical_overflow > 0:
+
+            print("Dikey Durum : FAIL")
+            print(f"Dikey Overflow : {vertical_overflow} px")
+
+            if horizontal_overflow <= 0:
+                fail_count += 1
 
         else:
 
-            print("Durum : PASS")
+            print("Dikey Durum : PASS")
 
-            print(f"Boşluk : {-pixel_difference} px")
+            if vertical_overflow == 0:
+                print("Dikey olarak tam sığıyor.")
+            else:
+                print(
+                    f"Dikey boşluk : {-vertical_overflow} px"
+                )
 
+        # Genel sonuç
+        if horizontal_overflow <= 0 and vertical_overflow <= 0:
             pass_count += 1
 
     print("\n==============================")
@@ -56,9 +82,7 @@ def main():
     print("ÖZET")
 
     print(f"Toplam : {len(texts)}")
-
     print(f"PASS : {pass_count}")
-
     print(f"FAIL : {fail_count}")
 
 
